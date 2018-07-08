@@ -8,6 +8,11 @@ my $bad_entry = Weblog::Boundary::Check::LogEntry->new(
     referer => '/admin/thing',
     url     => '/some-url',
 );
+my $static_entry = Weblog::Boundary::Check::LogEntry->new(
+    method  => 'GET',
+    referer => '/admin/thing',
+    url     => '/static/test.txt',
+);
 my $good_entry = Weblog::Boundary::Check::LogEntry->new(
     method  => 'POST',
     referer => '/admin/foo',
@@ -21,5 +26,12 @@ my $p = Weblog::Boundary::Check::Pattern->new(
 );
 ok $p->match($bad_entry);
 ok !$p->match($good_entry);
+
+my $fp = Weblog::Boundary::Check::Pattern->new(
+    url     => qr|^/static/|,
+);
+ok ! $fp->match($bad_entry);
+ok ! $fp->match($good_entry);
+ok $fp->match($static_entry);
 
 done_testing;

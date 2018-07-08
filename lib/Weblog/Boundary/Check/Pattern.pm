@@ -13,9 +13,9 @@ has url     => ( is => 'ro', isa => RegexpRef );
 sub match {
     my ( $self, $log_entry ) = @_;
 
-    if (   $log_entry->method =~ $self->method
-        && $log_entry->url =~ $self->url
-        && $log_entry->referer =~ $self->referer )
+    if (   ( !$self->method || $log_entry->method =~ $self->method )
+        && ( !$self->url || $log_entry->url =~ $self->url )
+        && ( !$self->referer || $log_entry->referer =~ $self->referer ) )
     {
         return 1;
     }
