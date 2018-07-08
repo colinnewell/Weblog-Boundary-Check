@@ -12,6 +12,7 @@ vault
 *.o
 *.pm.tdy
 *.bs
+*.bak
 
 # Devel::Cover
 cover_db/

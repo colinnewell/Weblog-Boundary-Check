@@ -6,13 +6,15 @@ use Types::Standard qw/RegexpRef/;
 
 use namespace::clean;
 
-has url     => ( is => 'ro', isa => RegexpRef );
+has method  => ( is => 'ro', isa => RegexpRef );
 has referer => ( is => 'ro', isa => RegexpRef );
+has url     => ( is => 'ro', isa => RegexpRef );
 
 sub match {
     my ( $self, $log_entry ) = @_;
 
-    if (   $log_entry->url =~ $self->url
+    if (   $log_entry->method =~ $self->method
+        && $log_entry->url =~ $self->url
         && $log_entry->referer =~ $self->referer )
     {
         return 1;
