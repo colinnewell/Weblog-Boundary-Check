@@ -8,8 +8,20 @@ use Types::Standard qw/ArrayRef/;
 
 our $VERSION = '0.001';
 
+use namespace::clean;
+
 has breach_patterns => ( is => 'ro', isa => ArrayRef );
 has false_positives => ( is => 'ro', isa => ArrayRef );
+
+sub new_from_config {
+    my ($self, $filename) = @_;
+
+    # load in the patterns/false positives from a config file.
+    # what format?
+    # let's go json
+    my $args = {};
+    return __PACKAGE__->new($args);
+}
 
 sub analyze_log {
     my ( $self, $log ) = @_;
@@ -23,7 +35,7 @@ sub analyze_log {
                         next ENTRY;
                     }
                 }
-                push @{ $errors{ $pattern->key } }, $entry;
+                push @{ $errors{ $pattern->key } }, $log_entry;
                 next ENTRY;
             }
         }
